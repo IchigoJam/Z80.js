@@ -28,7 +28,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// We'll begin with the object constructor and the public API functions.
 ///////////////////////////////////////////////////////////////////////////////
-function Z80(coreParameter)
+export function Z80(coreParameter)
 {
    // Obviously we'll be needing the core object's functions again.
    let core = coreParameter;
@@ -43,8 +43,8 @@ function Z80(coreParameter)
                 (typeof core.io_read !== "function")  || (typeof core.io_write !== "function"))
       throw("Z80: Core object is missing required functions.");
    
-   if (this === window)
-      throw("Z80: This function is a constructor; call it using operator new.");
+   //if (this === window)
+   //   throw("Z80: This function is a constructor; call it using operator new.");
 
    // All right, let's initialize the registers.
    // First, the standard 8080 registers.
