@@ -935,7 +935,7 @@ let do_ini = function()
 {
    b = do_dec(b);
    
-   core.mem_write(l | (h << 8), core.io_read((b << 8) | c));
+   core.mem_write(l | (h << 8), core.io_read(c));
    
    var result = (l | (h << 8)) + 1;
    l = result & 0xff;
@@ -946,7 +946,7 @@ let do_ini = function()
 
 let do_outi = function()
 {
-   core.io_write((b << 8) | c, core.mem_read(l | (h << 8)));
+   core.io_write(c, core.mem_read(l | (h << 8)));
    
    var result = (l | (h << 8)) + 1;
    l = result & 0xff;
@@ -1002,7 +1002,7 @@ let do_ind = function()
 {
    b = do_dec(b);
    
-   core.mem_write(l | (h << 8), core.io_read((b << 8) | c));
+   core.mem_write(l | (h << 8), core.io_read(c));
    
    var result = (l | (h << 8)) - 1;
    l = result & 0xff;
@@ -1013,7 +1013,7 @@ let do_ind = function()
 
 let do_outd = function()
 {
-   core.io_write((b << 8) | c, core.mem_read(l | (h << 8)));
+   core.io_write(c, core.mem_read(l | (h << 8)));
    
    var result = (l | (h << 8)) - 1;
    l = result & 0xff;
@@ -1841,7 +1841,7 @@ instructions[0xd2] = function()
 instructions[0xd3] = function()
 {
    pc = (pc + 1) & 0xffff;
-   core.io_write((a << 8) | core.mem_read(pc), a);
+   core.io_write(core.mem_read(pc), a);
 };
 // 0xd4 : CALL NC, nn
 instructions[0xd4] = function()
@@ -1900,7 +1900,7 @@ instructions[0xda] = function()
 instructions[0xdb] = function()
 {
    pc = (pc + 1) & 0xffff;
-   a = core.io_read((a << 8) | core.mem_read(pc));
+   a = core.io_read(core.mem_read(pc));
 };
 // 0xdc : CALL C, nn
 instructions[0xdc] = function()
@@ -2195,12 +2195,12 @@ let ed_instructions = [];
 // 0x40 : IN B, (C)
 ed_instructions[0x40] = function()
 {
-   b = do_in((b << 8) | c);
+   b = do_in(c);
 };
 // 0x41 : OUT (C), B
 ed_instructions[0x41] = function()
 {
-   core.io_write((b << 8) | c, b);
+   core.io_write(c, b);
 };
 // 0x42 : SBC HL, BC
 ed_instructions[0x42] = function()
@@ -2242,12 +2242,12 @@ ed_instructions[0x47] = function()
 // 0x48 : IN C, (C)
 ed_instructions[0x48] = function()
 {
-   c = do_in((b << 8) | c);
+   c = do_in(c);
 };
 // 0x49 : OUT (C), C
 ed_instructions[0x49] = function()
 {
-   core.io_write((b << 8) | c, c);
+   core.io_write(c, c);
 };
 // 0x4a : ADC HL, BC
 ed_instructions[0x4a] = function()
@@ -2288,12 +2288,12 @@ ed_instructions[0x4f] = function()
 // 0x50 : IN D, (C)
 ed_instructions[0x50] = function()
 {
-   d = do_in((b << 8) | c);
+   d = do_in(c);
 };
 // 0x51 : OUT (C), D
 ed_instructions[0x51] = function()
 {
-   core.io_write((b << 8) | c, d);
+   core.io_write(c, d);
 };
 // 0x52 : SBC HL, DE
 ed_instructions[0x52] = function()
@@ -2341,12 +2341,12 @@ ed_instructions[0x57] = function()
 // 0x58 : IN E, (C)
 ed_instructions[0x58] = function()
 {
-   e = do_in((b << 8) | c);
+   e = do_in(c);
 };
 // 0x59 : OUT (C), E
 ed_instructions[0x59] = function()
 {
-   core.io_write((b << 8) | c, e);
+   core.io_write(c, e);
 };
 // 0x5a : ADC HL, DE
 ed_instructions[0x5a] = function()
@@ -2394,12 +2394,12 @@ ed_instructions[0x5f] = function()
 // 0x60 : IN H, (C)
 ed_instructions[0x60] = function()
 {
-   h = do_in((b << 8) | c);
+   h = do_in(c);
 };
 // 0x61 : OUT (C), H
 ed_instructions[0x61] = function()
 {
-   core.io_write((b << 8) | c, h);
+   core.io_write(c, h);
 };
 // 0x62 : SBC HL, HL
 ed_instructions[0x62] = function()
@@ -2452,12 +2452,12 @@ ed_instructions[0x67] = function()
 // 0x68 : IN L, (C)
 ed_instructions[0x68] = function()
 {
-   l = do_in((b << 8) | c);
+   l = do_in(c);
 };
 // 0x69 : OUT (C), L
 ed_instructions[0x69] = function()
 {
-   core.io_write((b << 8) | c, l);
+   core.io_write(c, l);
 };
 // 0x6a : ADC HL, HL
 ed_instructions[0x6a] = function()
@@ -2510,12 +2510,12 @@ ed_instructions[0x6f] = function()
 // 0x70 : IN (C) (Undocumented)
 ed_instructions[0x70] = function()
 {
-   do_in((b << 8) | c);
+   do_in(c);
 };
 // 0x71 : OUT (C), 0 (Undocumented)
 ed_instructions[0x71] = function()
 {
-   core.io_write((b << 8) | c, 0);
+   core.io_write(c, 0);
 };
 // 0x72 : SBC HL, SP
 ed_instructions[0x72] = function()
@@ -2552,12 +2552,12 @@ ed_instructions[0x76] = function()
 // 0x78 : IN A, (C)
 ed_instructions[0x78] = function()
 {
-   a = do_in((b << 8) | c);
+   a = do_in(c);
 };
 // 0x79 : OUT (C), A
 ed_instructions[0x79] = function()
 {
-   core.io_write((b << 8) | c, a);
+   core.io_write(c, a);
 };
 // 0x7a : ADC HL, SP
 ed_instructions[0x7a] = function()
